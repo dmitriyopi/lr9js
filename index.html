@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="style18.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карткова Гра</title>
+    <script>
+       let cards = 
+       [
+    {src: 'img/6_of_clubs.png', value: 6},
+    {src: 'img/6_of_diamonds.png', value: 6},
+    {src: 'img/6_of_hearts.png', value: 6},
+    {src: 'img/6_of_spades.png', value: 6},
+    {src: 'img/7_of_clubs.png', value: 7},
+    {src: 'img/7_of_diamonds.png', value: 7},
+    {src: 'img/7_of_hearts.png', value: 7},
+    {src: 'img/7_of_spades.png', value: 7},
+    {src: 'img/8_of_clubs.png', value: 8},
+    {src: 'img/8_of_diamonds.png', value: 8},
+    {src: 'img/8_of_hearts.png', value: 8},
+    {src: 'img/8_of_spades.png', value: 8},
+    {src: 'img/9_of_clubs.png', value: 9},
+    {src: 'img/9_of_diamonds.png', value: 9},
+    {src: 'img/9_of_hearts.png', value: 9},
+    {src: 'img/9_of_spades.png', value: 9},
+    {src: 'img/10_of_clubs.png', value: 10},
+    {src: 'img/10_of_diamonds.png', value: 10},
+    {src: 'img/10_of_hearts.png', value: 10},
+    {src: 'img/10_of_spades.png', value: 10},
+    {src: 'img/jack_of_clubs.png', value: 2},
+    {src: 'img/jack_of_diamonds.png', value: 2},
+    {src: 'img/jack_of_hearts.png', value: 2},
+    {src: 'img/jack_of_spades.png', value: 2},
+    {src: 'img/queen_of_clubs.png', value: 3},
+    {src: 'img/queen_of_diamonds.png', value: 3},
+    {src: 'img/queen_of_hearts.png', value: 3},
+    {src: 'img/queen_of_spades.png', value: 3},
+    {src: 'img/king_of_clubs.png', value: 4},
+    {src: 'img/king_of_diamonds.png', value: 4},
+    {src: 'img/king_of_hearts.png', value: 4},
+    {src: 'img/king_of_spades.png', value: 4},
+    {src: 'img/ace_of_clubs.png', value: 11},
+    {src: 'img/ace_of_diamonds.png', value: 11},
+    {src: 'img/ace_of_hearts.png', value: 11},
+    {src: 'img/ace_of_spades.png', value: 11},
+];
+
+        let score1 = 0;
+        let score2 = 0;
+        let gameEnd = false;
+        let totalWins1 = 0;
+        let totalWins2 = 0;
+
+        function DealCard() 
+        {
+            const random = Math.floor(Math.random() * cards.length);
+            return cards[random];
+        }
+
+        function TakeACard() 
+        {
+            if (gameEnd) 
+            {
+                return;
+            }
+   
+            let card1 = DealCard();
+            score1 += card1.value;
+            document.getElementById("score1").innerText = score1;
+            document.getElementById("showCard1").src = card1.src;
+            if (score1 > 21)
+            {
+                GameEnd("Ви програли, перебір карт.");
+                return;
+            }
+
+            if (score2 < 18 && score1 <= 21) 
+            {
+                let card2 = DealCard();
+                score2 += card2.value;
+                document.getElementById("score2").innerText = score2;
+                document.getElementById("showCard2").src = card2.src; 
+            }
+
+            if (score2 > 21) 
+            {
+                GameEnd("Гравець 2 програв, перебір карт.");
+            }
+        }
+
+        function Stand() {
+            if (gameEnd) 
+            {
+                return;
+            }
+            
+            while (score2 < 18)
+            {
+                let card = DealCard();
+                score2 += card.value;
+                document.getElementById("score2").innerText = score2;
+                document.getElementById("showCard2").src = card.src;
+            }
+
+       
+            if (score2 > 21) 
+            {
+                GameEnd("Гравець 2 програв, перебір карт.");
+            } 
+            else if (score1 > score2)
+            {
+                GameEnd("Ви виграли!");
+            } 
+            else if (score1 < score2)
+            {
+                GameEnd("Гравець 2 виграв!");
+            }
+             else 
+            {
+                GameEnd("Нічия!");
+            }
+        }
+
+        function GameEnd(message)
+         {
+            gameEnd = true;
+            document.getElementById("result").innerText = message;
+            if (message.includes("Ви виграли")) {}
+             
+            else if (message.includes("Гравець 2 виграв")) {}
+            
+            
+        }
+
+        function ResetGame() 
+        {
+            score1 = 0;
+            score2 = 0;
+            gameEnd = false;
+            document.getElementById("score1").innerText = score1;
+            document.getElementById("score2").innerText = score2;
+            document.getElementById("result").innerText = "";
+            document.getElementById("showCard1").src = "img/firstcard.png"; 
+            document.getElementById("showCard2").src = "img/firstcard.png";
+        }
+
+        function NewGame() 
+        {
+            totalWins1 = 0;
+            totalWins2 = 0;
+            ResetGame();
+         
+            document.getElementById("result").innerHTML = "<p>Нова гра почалась!</p>";
+        }
+
+        function EditNames() 
+        {
+            let playerName1 = prompt("Введіть нове ім'я для першого гравця", "Гравець 1");
+            let playerName2 = prompt("Введіть нове ім'я для другого гравця", "Гравець 2");
+            if (playerName1) document.getElementById("playerName1").innerText = playerName1;
+            if (playerName2) document.getElementById("playerName2").innerText = playerName2;
+        }
+    </script>
+</head>
+<body>
+<div class="card-box"></div>
+<div class="main-container">
+    <div class="player">
+        <div class="scoreBox" id="score1">0</div>
+        <img id="showCard1" src="img/firstcard.png" alt="Карта Гравця 1" class="card">
+        <p id="playerName1">Гравець 1</p>
+    </div>
+
+    <div class="game-container">
+        <h1>Почати гру!</h1>
+        <div id="result"></div>
+        <button class="button" onclick="TakeACard()">Кинути карту</button>
+        <button class="button" onclick="Stand()">Зупинитись</button>
+        <button class="button" onclick="NewGame()">Нова гра</button>
+        <button class="button" onclick="EditNames()">Змінити імена</button>
+    </div>
+
+    <div class="player">
+        <div class="scoreBox" id="score2">0</div>
+        <img id="showCard2" src="img/firstcard.png" alt="Карта Гравця 2" class="card">
+        <p id="playerName2">Гравець 2</p>
+    </div>
+</div>
+</body>
+</html>
